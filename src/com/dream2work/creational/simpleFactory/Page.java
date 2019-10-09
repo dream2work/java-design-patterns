@@ -1,4 +1,4 @@
-package com.dream2work.Creational.SimpleFactrory;
+package com.dream2work.creational.simpleFactory;
 
 public abstract class Page {
     public String getText() {

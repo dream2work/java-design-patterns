@@ -1,4 +1,4 @@
-package com.dream2work.Creational.Builder;
+package com.dream2work.creational.builder;
 
 public class LunchOrder {
 

@@ -1,4 +1,4 @@
-package com.dream2work.Creational.Prototype;
+package com.dream2work.creational.prototype;
 
 public abstract class Item implements Cloneable {
     public String getName() {

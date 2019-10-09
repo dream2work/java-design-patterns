@@ -1,4 +1,4 @@
-package com.dream2work.Creational.Singletone;
+package com.dream2work.creational.singletone;
 
 public class Singletone {
 
