@@ -15,6 +15,7 @@ import com.dream2work.creational.simpleFactory.Page;
 import com.dream2work.creational.simpleFactory.PageFactory;
 import com.dream2work.creational.singletone.Singletone;
 import com.dream2work.creational.singletone.SingletoneLIH;
+import com.dream2work.structural.adapter.*;
 
 public class Main {
 
@@ -88,7 +89,19 @@ public class Main {
 
         // *** Structural
 
-        // Adapter
+        // Adapter (Class adapter/ Two way adapter)
+        EmployeeClassAdapter classAdapter = new EmployeeClassAdapter();
+        EmployeeStorage.fillData(classAdapter);
+        BusinessCard card = new BusinessCard();
+        String cardString = card.designCard(classAdapter);
+        System.out.println(cardString);
+
+        // Adapter (Object adapter)
+        Employee employee = new Employee();
+        EmployeeStorage.fillData(employee);
+        EmployeeObjectAdapter objectAdapter = new EmployeeObjectAdapter(employee);
+        cardString = card.designCard(objectAdapter);
+        System.out.println(cardString);
 
     }
 }
