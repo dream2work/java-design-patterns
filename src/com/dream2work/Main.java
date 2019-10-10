@@ -16,6 +16,12 @@ import com.dream2work.creational.simpleFactory.PageFactory;
 import com.dream2work.creational.singletone.Singletone;
 import com.dream2work.creational.singletone.SingletoneLIH;
 import com.dream2work.structural.adapter.*;
+import com.dream2work.structural.bridge.ArrayLinkedList;
+import com.dream2work.structural.bridge.Queue;
+import com.dream2work.structural.decorator.Base64TextDecorator;
+import com.dream2work.structural.decorator.Message;
+import com.dream2work.structural.decorator.TextMessage;
+import com.dream2work.structural.decorator.UpperCaseTextDecorator;
 
 public class Main {
 
@@ -102,6 +108,19 @@ public class Main {
         EmployeeObjectAdapter objectAdapter = new EmployeeObjectAdapter(employee);
         cardString = card.designCard(objectAdapter);
         System.out.println(cardString);
+
+        // Bridge
+        Queue<String> queue = new Queue<>(new ArrayLinkedList<>());
+        queue.offer("A");
+        queue.poll();
+
+        //Decorator
+        Message m = new TextMessage("Test text");
+        System.out.println(m.getContent());
+        Message decorator = new UpperCaseTextDecorator(m);
+        System.out.println(decorator.getContent());
+        decorator = new Base64TextDecorator(decorator);
+        System.out.println(decorator.getContent());
 
     }
 }
