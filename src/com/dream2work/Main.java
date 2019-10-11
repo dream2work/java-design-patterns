@@ -18,10 +18,17 @@ import com.dream2work.creational.singletone.SingletoneLIH;
 import com.dream2work.structural.adapter.*;
 import com.dream2work.structural.bridge.ArrayLinkedList;
 import com.dream2work.structural.bridge.Queue;
+import com.dream2work.structural.composite.BinaryFile;
+import com.dream2work.structural.composite.Directory;
+import com.dream2work.structural.composite.File;
 import com.dream2work.structural.decorator.Base64TextDecorator;
 import com.dream2work.structural.decorator.Message;
 import com.dream2work.structural.decorator.TextMessage;
 import com.dream2work.structural.decorator.UpperCaseTextDecorator;
+import com.dream2work.structural.facade.Order;
+import com.dream2work.structural.facade.email.EmailFacade;
+import com.dream2work.structural.flyweight.ErrorMessage;
+import com.dream2work.structural.flyweight.ErrorMessageFactory;
 
 public class Main {
 
@@ -114,13 +121,34 @@ public class Main {
         queue.offer("A");
         queue.poll();
 
-        //Decorator
+        // Decorator
         Message m = new TextMessage("Test text");
         System.out.println(m.getContent());
         Message decorator = new UpperCaseTextDecorator(m);
         System.out.println(decorator.getContent());
         decorator = new Base64TextDecorator(decorator);
         System.out.println(decorator.getContent());
+
+        //Composite
+        File root = new Directory("dir 1");
+        root.addFile(new BinaryFile("file 1", 100));
+        root.addFile(new BinaryFile("file 2", 200));
+        File root2 = new Directory("dir 2");
+        root.addFile(root2);
+        root2.addFile(new BinaryFile("dir 3", 300));
+
+        root.ls();
+
+        // Facade
+
+        EmailFacade emailFacade = new EmailFacade();
+        emailFacade.sendOrderEmail(new Order("1", 100));
+
+        // Flyweight
+        ErrorMessage errorMessage = ErrorMessageFactory.getInstance().getErrorMessage(ErrorMessageFactory.ErrorType.PageNotFoundError);
+        System.out.println(errorMessage.getMessage("777"));
+
+
 
     }
 }
