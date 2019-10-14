@@ -1,5 +1,13 @@
 package com.dream2work;
 
+import com.dream2work.behavioral.chainofresponsibility.Director;
+import com.dream2work.behavioral.chainofresponsibility.LeaveApplication;
+import com.dream2work.behavioral.chainofresponsibility.Manager;
+import com.dream2work.behavioral.chainofresponsibility.ProjectLead;
+import com.dream2work.behavioral.command.AddMemberCommand;
+import com.dream2work.behavioral.command.Command;
+import com.dream2work.behavioral.command.EWSService;
+import com.dream2work.behavioral.command.MailTasksRunner;
 import com.dream2work.creational.abstractFactory.AWSResourceFactory;
 import com.dream2work.creational.abstractFactory.Client;
 import com.dream2work.creational.abstractFactory.GoogleCloudResourceFactory;
@@ -29,6 +37,12 @@ import com.dream2work.structural.facade.Order;
 import com.dream2work.structural.facade.email.EmailFacade;
 import com.dream2work.structural.flyweight.ErrorMessage;
 import com.dream2work.structural.flyweight.ErrorMessageFactory;
+import com.dream2work.structural.proxy.staticProxy.BitmapImageFactory;
+import com.dream2work.structural.proxy.Image;
+
+import javafx.geometry.Point2D;
+
+import java.time.LocalDate;
 
 public class Main {
 
@@ -140,13 +154,53 @@ public class Main {
         root.ls();
 
         // Facade
-
         EmailFacade emailFacade = new EmailFacade();
         emailFacade.sendOrderEmail(new Order("1", 100));
 
         // Flyweight
         ErrorMessage errorMessage = ErrorMessageFactory.getInstance().getErrorMessage(ErrorMessageFactory.ErrorType.PageNotFoundError);
         System.out.println(errorMessage.getMessage("777"));
+
+        // Proxy (static)
+        Image image = BitmapImageFactory.getBitmapImage("IMAGE");
+        image.setLocation(new Point2D(10, 10));
+        image.setLocation(new Point2D(1, 1));
+        image.setLocation(new Point2D(8, 8));
+        image.render();
+
+        // Proxy (dynamic)
+        Image image1 = com.dream2work.structural.proxy.dynamicProxy.BitmapImageFactory.getBitmapImage("IMAGE");
+        image1.setLocation(new Point2D(9,9));
+        image1.render();
+
+        // *** Behavioral
+
+        // Chain of responsibility
+        Director director = new Director(null);
+        Manager manager = new Manager(director);
+        ProjectLead lead = new ProjectLead(manager);
+        LeaveApplication application = LeaveApplication.getBuilder().withType(LeaveApplication.Type.Sick)
+                .from(LocalDate.now()).to(LocalDate.of(2018, 2, 28))
+                .build();
+        System.out.println("Before");
+        System.out.println(application);
+        System.out.println("After");
+        lead.processLeaveApplication(application);
+        System.out.println(application);
+
+        // Command
+        EWSService service = new EWSService();
+        Command c1 = new AddMemberCommand("a1@a.com", "spam", service);
+        MailTasksRunner.getInstance().addCommand(c1);
+        Command c2 = new AddMemberCommand("a2@a.com", "spam", service);
+        MailTasksRunner.getInstance().addCommand(c2);
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            System.out.println(e);
+        }
+        MailTasksRunner.getInstance().shutdown();
+
 
 
 
