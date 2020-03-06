@@ -1,4 +1,4 @@
-package com.dream2work.behavioral.inerpreter;
+package com.dream2work.behavioral.interpreter;
 
 public class Report {
     private String name;

@@ -1,4 +1,4 @@
-package com.dream2work.behavioral.inerpreter;
+package com.dream2work.behavioral.interpreter;
 
 import java.util.List;
 import java.util.stream.Collectors;
